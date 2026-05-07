@@ -1,0 +1,56 @@
+// Import Apify SDK
+import { Actor } from 'apify';
+import { XMLParser } from 'fast-xml-parser';
+import { Dataset } from 'apify';
+
+// Utility function to build hierarchy and store dataset
+const buildHierarchy = (urls, parent = null, depth = 0, depthLimit, hierarchy = []) => {
+    if (depth > depthLimit) return hierarchy;
+
+    urls.forEach((urlObj) => {
+        const url = urlObj.loc;
+        hierarchy.push({ url, parentUrl: parent, depth });
+
+        // Recursively process sub URLs (if depth is available and not too deep)
+        if (urlObj.children && depth < depthLimit) {
+            buildHierarchy(urlObj.children, url, depth + 1, depthLimit, hierarchy);
+        }
+    });
+
+    return hierarchy;
+};
+
+// Entry point for the Actor
+await Actor.init();
+const { sitemapUrl, depthLimit } = await Actor.getInput();
+
+try {
+    // Fetch and parse the sitemap content
+    const response = await fetch(sitemapUrl);
+    const sitemapXml = await response.text();
+
+    const parser = new XMLParser();
+    const sitemapObj = parser.parse(sitemapXml);
+
+    // Extract URLs from the sitemap
+    const urlSet = sitemapObj.urlset?.url || sitemapObj.sitemapindex?.sitemap || [];
+    const urls = Array.isArray(urlSet) ? urlSet : [urlSet];
+
+    // Build hierarchy with depth filtering
+    const sitemapHierarchy = buildHierarchy(urls, null, 0, depthLimit);
+
+    // Save the hierarchy to the dataset
+    for (const entry of sitemapHierarchy) {
+        await Dataset.pushData({
+            url: entry.url,
+            depth: entry.depth,
+            parentUrl: entry.parentUrl,
+        });
+    }
+
+    console.log(`Successfully processed ${sitemapHierarchy.length} URLs from the sitemap.`);
+} catch (error) {
+    console.error('Failed to process the sitemap:', error);
+}
+
+await Actor.exit();

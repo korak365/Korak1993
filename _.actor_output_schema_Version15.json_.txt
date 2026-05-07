@@ -1,0 +1,11 @@
+{
+    "actorOutputSchemaVersion": 1,
+    "title": "Output Schema for Sitemap Visualizer",
+    "properties": {
+        "overview": {
+            "type": "string",
+            "title": "Visualization Output",
+            "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+        }
+    }
+}

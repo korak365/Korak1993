@@ -1,0 +1,17 @@
+{
+    "actorSpecification": 1,
+    "name": "sitemap-visualizer",
+    "title": "Sitemap Visualizer",
+    "description": "Parses a website's sitemap.xml into an interactive, visual site hierarchy map.",
+    "version": "0.0",
+    "meta": {
+        "templateId": "ai-generated-actor",
+        "generatedBy": "copilot-2026"
+    },
+    "input": "./input_schema.json",
+    "output": "./output_schema.json",
+    "storages": {
+        "dataset": "./dataset_schema.json"
+    },
+    "dockerfile": "../Dockerfile"
+}

@@ -1,0 +1,42 @@
+{
+    "actorSpecification": 1,
+    "fields": {
+        "url": {
+            "type": "string",
+            "title": "Page URL"
+        },
+        "depth": {
+            "type": "integer",
+            "title": "Depth Level"
+        },
+        "parentUrl": {
+            "type": "string",
+            "title": "Parent URL"
+        }
+    },
+    "views": {
+        "overview": {
+            "title": "Site Map Overview",
+            "transformation": {
+                "fields": ["url", "depth", "parentUrl"]
+            },
+            "display": {
+                "component": "table",
+                "properties": {
+                    "url": {
+                        "label": "Page URL",
+                        "format": "link"
+                    },
+                    "depth": {
+                        "label": "Depth",
+                        "format": "number"
+                    },
+                    "parentUrl": {
+                        "label": "Parent URL",
+                        "format": "link"
+                    }
+                }
+            }
+        }
+    }
+}

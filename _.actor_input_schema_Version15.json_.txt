@@ -1,0 +1,20 @@
+{
+    "title": "Input Schema for Sitemap Visualizer",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "sitemapUrl": {
+            "title": "Sitemap URL",
+            "type": "string",
+            "description": "The URL of the website's sitemap.xml to visualize.",
+            "default": "https://example.com/sitemap.xml"
+        },
+        "depthLimit": {
+            "title": "Depth Limit for Visualization",
+            "type": "integer",
+            "description": "Maximum depth to parse URLs in the sitemap hierarchy.",
+            "default": 3
+        }
+    },
+    "required": ["sitemapUrl"]
+}
